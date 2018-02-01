@@ -1,6 +1,7 @@
 #!/bin/bash
 #安装CentOS 6.8 mini版之后，yum安装rpm包
 #陈俊华 2017.4.15
+#version 2:安装aliyun yum源，关闭 selinux iptables ipv6，修改开机启动项 /2018-01-31
 
 #输出
 echo_status(){
