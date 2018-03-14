@@ -33,7 +33,7 @@ rm -f anaconda-ks.cfg  install.log  install.log.syslog 2>/dev/null
 #安装rpm包
 #安装 aliyun yum 源
 echo_status "安装 aliyun yum 源"
-rm -f /etc/yum.repo.d/*
+rm -f /etc/yum.repos.d/*
 curl -o /etc/yum.repos.d/base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
 check_ok
