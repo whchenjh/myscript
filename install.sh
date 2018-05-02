@@ -1,7 +1,8 @@
 #!/bin/bash
 #安装CentOS 6.8 mini版之后，yum安装rpm包
 #陈俊华 2017.4.15
-#version 2:安装aliyun yum源，关闭 selinux iptables ipv6，修改开机启动项 /2018-01-31
+#version 1.1:安装aliyun yum源，关闭 selinux iptables ipv6，修改开机启动项 /2018-01-31
+#version 1.2:.bashrc 初始化时修改 HISTORY 变量
 
 #输出
 echo_status(){
@@ -76,7 +77,7 @@ done
 echo_status 修改.bashrc
 bashrc_file="/root/.bashrc"
 #sed -i '/rm/s/^/#/g' $bashrc_file && sed -i '/cp/s/^/#/g' $bashrc_file && sed -i "/mv/a alias grep='grep --color=auto'" $bashrc_file && sed -i "/mv/a alias vi='vim'" $bashrc_file &&  echo "$file更改完成,请执行 source .bashrc" ||echo "$file更改失败"
-sed -i -e "/rm/s/^/#/g;/cp/s/^/#/g;/mv/a alias grep='grep --color=auto'" -e "/mv/a alias vi='vim'" $bashrc_file &&  echo -e "${bashrc_file}更改完成,请执行 source .bashrc\n" ||echo "${bashrc_file}更改失败"
+sed -i -e "/rm/s/^/#/g;/cp/s/^/#/g;/mv/a alias grep='grep --color=auto'\nalias vi='vim'" -e '$a export HISTTIMEFORMAT="%F %T "' $bashrc_file &&  echo -e "${bashrc_file}更改完成,请执行 source .bashrc\n" ||echo "${bashrc_file}更改失败"
 
 
 #同步时间
