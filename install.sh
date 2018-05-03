@@ -28,6 +28,13 @@ set_testrpm(){
         fi
 }
 
+
+#同步时间
+#echo -e "\033[34m同步时间 \033[0m"
+echo_status 同步时间
+/usr/sbin/ntpdate -u ntp1.cachecn.net ntp2.cachecn.net && /sbin/hwclock -w
+check_ok
+
 #删除/root/下的自带文件
 rm -f anaconda-ks.cfg  install.log  install.log.syslog 2>/dev/null
 
@@ -79,12 +86,6 @@ bashrc_file="/root/.bashrc"
 #sed -i '/rm/s/^/#/g' $bashrc_file && sed -i '/cp/s/^/#/g' $bashrc_file && sed -i "/mv/a alias grep='grep --color=auto'" $bashrc_file && sed -i "/mv/a alias vi='vim'" $bashrc_file &&  echo "$file更改完成,请执行 source .bashrc" ||echo "$file更改失败"
 sed -i -e "/rm/s/^/#/g;/cp/s/^/#/g;/mv/a alias grep='grep --color=auto'\nalias vi='vim'" -e '$a export HISTTIMEFORMAT="%F %T "' $bashrc_file &&  echo -e "${bashrc_file}更改完成,请执行 source .bashrc\n" ||echo "${bashrc_file}更改失败"
 
-
-#同步时间
-#echo -e "\033[34m同步时间 \033[0m"
-echo_status 同步时间
-/usr/sbin/ntpdate -u ntp1.cachecn.net ntp2.cachecn.net && /sbin/hwclock -w
-check_ok
 
 
 #关闭 selinux
