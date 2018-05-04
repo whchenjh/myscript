@@ -1,8 +1,9 @@
 #!/bin/bash
 #安装CentOS 6.8 mini版之后，yum安装rpm包
 #陈俊华 2017.4.15
-#version 1.1:安装aliyun yum源，关闭 selinux iptables ipv6，修改开机启动项 /2018-01-31
-#version 1.2:.bashrc 初始化时修改 HISTORY 变量
+#version 1.1 (2018.01.31): 安装aliyun yum源，关闭 selinux iptables ipv6，修改开机启动项 /2018-01-31
+#version 1.2 (2018.04.28): .bashrc 初始化时修改 HISTORY 变量
+#version 1.3 (2018.05.04): rpm 包添加 man、man-pages-zh-CN.noarch
 
 #输出
 echo_status(){
@@ -29,12 +30,6 @@ set_testrpm(){
 }
 
 
-#同步时间
-#echo -e "\033[34m同步时间 \033[0m"
-echo_status 同步时间
-/usr/sbin/ntpdate -u ntp1.cachecn.net ntp2.cachecn.net && /sbin/hwclock -w
-check_ok
-
 #删除/root/下的自带文件
 rm -f anaconda-ks.cfg  install.log  install.log.syslog 2>/dev/null
 
@@ -46,7 +41,7 @@ curl -o /etc/yum.repos.d/base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
 check_ok
 #需要安装的包
-rpms="wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat"
+rpms="wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch"
 #echo -e "\033[34m安装rpm包 \033[0m"
 echo_status 安装rpm包
 for rpm in $rpms
@@ -79,12 +74,18 @@ done
 #fi
 
 
+#同步时间
+#echo -e "\033[34m同步时间 \033[0m"
+echo_status 同步时间
+/usr/sbin/ntpdate -u ntp1.cachecn.net ntp2.cachecn.net && /sbin/hwclock -w
+check_ok
+
 #修改.bashrc
 #echo -e "\033[34m修改.bashrc \033[0m"
 echo_status 修改.bashrc
 bashrc_file="/root/.bashrc"
 #sed -i '/rm/s/^/#/g' $bashrc_file && sed -i '/cp/s/^/#/g' $bashrc_file && sed -i "/mv/a alias grep='grep --color=auto'" $bashrc_file && sed -i "/mv/a alias vi='vim'" $bashrc_file &&  echo "$file更改完成,请执行 source .bashrc" ||echo "$file更改失败"
-sed -i -e "/rm/s/^/#/g;/cp/s/^/#/g;/mv/a alias grep='grep --color=auto'\nalias vi='vim'" -e '$a export HISTTIMEFORMAT="%F %T "' $bashrc_file &&  echo -e "${bashrc_file}更改完成,请执行 source .bashrc\n" ||echo "${bashrc_file}更改失败"
+sed -i -e "/rm/s/^/#/g;/cp/s/^/#/g;/mv/a alias grep='grep --color=auto'\nalias vi='vim'\nalias cman='man -M /usr/share/man/zh_CN'" -e '$a export HISTTIMEFORMAT="%F %T "' $bashrc_file &&  echo -e "${bashrc_file}更改完成,请执行 source .bashrc\n" ||echo "${bashrc_file}更改失败"
 
 
 
