@@ -41,7 +41,7 @@ curl -o /etc/yum.repos.d/base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
 check_ok
 #需要安装的包
-rpms="wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch"
+rpms="wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch yum-plugin-priorities"
 #echo -e "\033[34m安装rpm包 \033[0m"
 echo_status 安装rpm包
 for rpm in $rpms
