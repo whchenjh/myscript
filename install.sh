@@ -33,15 +33,19 @@ set_testrpm(){
 #删除/root/下的自带文件
 rm -f anaconda-ks.cfg  install.log  install.log.syslog 2>/dev/null
 
+#修改 DNS
+sed -i "1a nameserver 192.168.5.101" /etc/resolv.conf
+
 #安装rpm包
 #安装 aliyun yum 源
-echo_status "安装 aliyun yum 源"
+echo_status "安装 yum 源"
 rm -f /etc/yum.repos.d/*
 curl -o /etc/yum.repos.d/base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
+curl -o /etc/yum.repos.d/support-101.repo http://yum.cjh.com/support-101.repo
 check_ok
 #需要安装的包
-rpms="wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch yum-plugin-priorities subversion"
+rpms="yum-plugin-priorities wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch subversion"
 #echo -e "\033[34m安装rpm包 \033[0m"
 echo_status 安装rpm包
 for rpm in $rpms
@@ -114,6 +118,7 @@ done
 for cursrv in crond rsyslog sshd network; do
 	chkconfig --level 3 $cursrv on
 done
+chkconfig |grep "3:on"
 check_ok
 
 
