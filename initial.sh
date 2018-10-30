@@ -107,7 +107,7 @@ function f_InstallRpm(){
     f_info "安装rpm包..."
     yum install -y wget vim bind-utils bc rsync git httping jq rdate tcpdump traceroute \
     telnet iotop ntp lrzsz screen gcc gcc-c++ unzip sysstat man man-pages-zh-CN.noarch subversion \
-    bash-completion yum-plugin-priorities |tee -a $LOG_DIR/yum-install.log
+    bash-completion yum-plugin-priorities net-tools |tee -a $LOG_DIR/yum-install.log
     [ $? -eq 0 ] || f_info 31 "yum install failed."
 } # end f_InstallRpm
 
@@ -127,12 +127,15 @@ function f_OffService(){
         done
         chkconfig |grep "3:on"
     elif [ "$OS_VSN" = "cent7" ]; then
-        f_info "关闭 iptables..."
+        f_info "关闭 iptables ..."
         systemctl stop firewalld.service
         systemctl disable firewalld.service
-        f_info "关闭 postfix..."
+        f_info "关闭 postfix ..."
         systemctl stop postfix.service
         systemctl disable postfix.service
+	f_info "关闭 chrond ..."
+	systemctl stop chronyd.service
+	systemctl disable chronyd.service
     fi
 }
 
